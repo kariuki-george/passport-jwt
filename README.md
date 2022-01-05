@@ -2,18 +2,17 @@
 
 ### The repo basically offers authentication\*/authorization using passport js
 
-> Authentication is implemented using jwts
-> the following strategies are implemented
+> - Authentication is implemented using jwts
+> - The following strategies are implemented
 
 > > - passport-google
 > > - passport-github
 > > - passport-jwt
+> >   > 1.  Login with email and password
+> >   > 2.  Forgot passport option
+> >   > 3.  send otp for password resetting
 
-> > > 1.  Login with email and password
-> > > 2.  Forgot passport option
-> > > 3.  send otp for password resetting
-
-> A jwt is issued after successfull authentication with all strategies thus authorization does not require db
+> A jwt is issued after successful authentication with all strategies thus authorization does not require db
 
 ## To run the application
 
@@ -23,6 +22,6 @@
 > >     > 3. GITHUB_CLIENT_ID
 > >     > 4. GOOGLE_CLIENT_SECRET
 > >     > 5. GOOGLE_CLIENT_ID
-> > 2.  Add appropriate callbacks in the respective files
+> > 2.  Add appropriate callback_urls in the respective files
 > > 3.  Navigate to app/auth/ and run node createKey.js to create the public and private keys
 > > 4.  Go to topmost directory and run npm start/node index.js
