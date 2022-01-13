@@ -15,13 +15,21 @@ function genKeyPair() {
     },
   });
 
-  // Create the public key file
-  fs.writeFileSync(__dirname + "/id_rsa_pub.pem", keyPair.publicKey);
+  // Create the public key file for jwt
+  fs.writeFileSync(__dirname + "/id_rsa_jwt_pub.pem", keyPair.publicKey);
 
-  // Create the private key file
-  fs.writeFileSync(__dirname + "/id_rsa_priv.pem", keyPair.privateKey);
+  // Create the private key file for jwt
+  fs.writeFileSync(__dirname + "/id_rsa_jwt_priv.pem", keyPair.privateKey);
+
+  // Create the public key file for refreshJwt
+  fs.writeFileSync(__dirname + "/id_rsa_refreshJwt_pub.pem", keyPair.publicKey);
+
+  // Create the private key file for refreshJwt
+  fs.writeFileSync(
+    __dirname + "/id_rsa_refreshJwt_priv.pem",
+    keyPair.privateKey
+  );
 }
 
 // Generates the keypair
 genKeyPair();
-

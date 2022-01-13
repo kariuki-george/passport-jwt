@@ -1,6 +1,6 @@
-const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 const { User } = require("../users/index");
 const dotenv = require("dotenv");
+const GoogleTokenStrategy = require("passport-google-token").Strategy;
 
 dotenv.config();
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
@@ -9,22 +9,32 @@ const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const options = {
   clientID: GOOGLE_CLIENT_ID,
   clientSecret: GOOGLE_CLIENT_SECRET,
-  callbackURL: "http://localhost:3000/api/auth/google/callback",
 };
 
-const strategy = new GoogleStrategy(
+const strategy = new GoogleTokenStrategy(
   options,
   async (accessToken, refreshToken, profile, done) => {
     try {
-      let user = await User.findOne({ googleId: profile.id });
+      let user = await User.findOne({ "googleProvider.id": profile.id });
       if (user) return done(null, user);
 
-      const newUser = new User({
-        email: profile._json.email,
-        strategy: "google",
-        googleId: profile.id,
-      });
-      user = await newUser.save();
+      user = await User.findOneAndUpdate(
+        { email: profile.emails[0].value },
+        {
+          fullName: profile.displayName,
+          email: profile.emails[0].value,
+
+          googleProvider: {
+            id: profile.id,
+            token: accessToken,
+          },
+        },
+        {
+          upsert: true,
+          new: true,
+        }
+      );
+
       return done(null, user);
     } catch (error) {
       return done(error, null);
